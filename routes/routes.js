@@ -5,6 +5,7 @@ import { CONFIGURATION } from '../utility/const.js'
 import { registration } from "../middlewares/registration.js";
 import { login } from "../middlewares/login.js";
 import { addbooks } from "../middlewares/addbooks.js";
+import { getbooks } from "../middlewares/getbooks.js";
 import { verifyToken } from '../middlewares/auth.js';
 
 export const routes = Router();
@@ -18,12 +19,22 @@ routes.post("/books", [verifyToken, addbooks], function(req, res){
     }
 });
 
-routes.get("/books", function(req, res){
-    res.sendStatus().send();
+routes.get("/books", [verifyToken, getbooks], function(req, res){
+    if(res.locals.data){
+        res.status(200).json({result: res.locals.data});
+    }
+    else{
+        res.status(500).json({result: null});
+    }
 });
 
-routes.get("/books/:id", function(req, res){
-    res.sendStatus().send();
+routes.get("/books/:id", [verifyToken, getbooks], function(req, res){
+    if(res.locals.data){
+        res.status(200).json({result: res.locals.data});
+    }
+    else{
+        res.status(500).json({result: null});
+    }
 });
 
 routes.post("/users", [registration], function(req, res, next){
