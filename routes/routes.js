@@ -68,8 +68,11 @@ routes.post("/users/login", [login], function(req, res, next){
 });
 
 routes.post("/borrow/:bookId/:userId", [verifyToken, borrowbook], function(req, res, next){
-    if(res.locals.data === true){
+    if(res.locals.data === 0){
         res.status(200).json({message: "book is borrowed"});
+    }
+    else if(res.locals.data === -1){
+        res.status(200).json({message: "no book is left"});
     }
     else{
         res.status(500).json({message: "SOMETHING WENT WRONG"});
