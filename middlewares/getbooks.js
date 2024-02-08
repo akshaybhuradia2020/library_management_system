@@ -7,13 +7,18 @@ export async function getbooks(req, res, next){
     try{
         let get_conn = await dbconnection();
         const BOOK = get_conn.model('BOOK', _bookdata);
-        if(req.params === undefined){
+        
+        if(Object.keys(req.params).length === 0){
             res.locals.data = await BOOK.find({});
             next();
         }
-        else if(typeof(req.params.id) === "string"){
-            res.locals.data = await BOOK.findById(req.params.id);
-            next()
+        else if(Object.keys(req.params).length >= 1){
+            res.locals.data = await BOOK.findById(req.params.id).exec();
+            next();
+        }
+        else{
+            res.locals.data = undefined;
+            next();
         }
     }
     catch(error){

@@ -6,6 +6,7 @@ import { registration } from "../middlewares/registration.js";
 import { login } from "../middlewares/login.js";
 import { addbooks } from "../middlewares/addbooks.js";
 import { getbooks } from "../middlewares/getbooks.js";
+import { borrowbook, returnbook, getuser_borrowed_books } from '../middlewares/bookstatus.js';
 import { verifyToken } from '../middlewares/auth.js';
 
 export const routes = Router();
@@ -66,14 +67,31 @@ routes.post("/users/login", [login], function(req, res, next){
     }
 });
 
-routes.post("/borrow/:bookId/:userId", function(req, res){
-    res.sendStatus().send();
+routes.post("/borrow/:bookId/:userId", [verifyToken, borrowbook], function(req, res, next){
+    if(res.locals.data){
+        res.sendStatus(200).json({message: "book is borrowed"});
+    }
+    else{
+        res.sendStatus(500).json({message: "SOMETHING WENT WRONG"});
+    }
 });
 
-routes.post("/borrow/return/:bookId/:userId", function(req, res){
-    res.sendStatus().send();
+routes.post("/return/:bookId/:userId", [verifyToken, returnbook], function(req, res, next){
+    if(res.locals.data){
+        res.sendStatus(200).json({message: "book is returned"});
+    }
+    else{
+        res.sendStatus(500).json({message: "SOMETHING WENT WRONG"});
+    }
+    
 });
 
-routes.post("/users/:userId/books", function(req, res){
-    res.sendStatus().send();
+routes.get("/users/:userId/books", [verifyToken, getuser_borrowed_books], function(req, res, next){
+    if(res.locals.data){
+        res.sendStatus(200).json({ results: res.locals.data});
+    }
+    else{
+        res.sendStatus(200).json({results: null});
+    }
+    
 });
