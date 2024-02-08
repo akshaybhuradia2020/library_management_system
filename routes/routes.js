@@ -2,15 +2,15 @@ import jwt from 'jsonwebtoken';
 import { Router } from "express";
 
 import { CONFIGURATION } from '../utility/const.js'
-import {registration} from "../middlewares/registration.js";
-import {login} from "../middlewares/login.js";
-// import {getproductdetails} from "../middlewares/getproducts.js";
+import { registration } from "../middlewares/registration.js";
+import { login } from "../middlewares/login.js";
+import { addbooks } from "../middlewares/addbooks.js";
 import { verifyToken } from '../middlewares/auth.js';
 
 export const routes = Router();
 
-routes.post("/books", function(req, res){
-    if(res.locals.check === true){
+routes.post("/books", [verifyToken, addbooks], function(req, res){
+    if(res.locals.data === true){
         res.status(201).json({message: "Book is added"});
     }
     else{

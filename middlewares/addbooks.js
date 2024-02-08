@@ -24,6 +24,7 @@ export async function addbooks(req, res, next){
     }
     catch(error){
         res.locals.data = false;
+        console.log(error);
         next();
     }
 };
