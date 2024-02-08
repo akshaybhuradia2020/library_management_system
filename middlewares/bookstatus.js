@@ -13,22 +13,14 @@ export async function borrowbook(req, res, next){
             next();
         }
         else if(Object.keys(req.params).length >= 2 ){
-            let _t = 0;
-            const get_book_quantity = await BOOK.findById(req.params["bookId"])
-            .then(msg => {console.log(msg); _t=msg["quantity"]; res.locals.data = true;})
-            .catch(err => {console.log(err); throw "Error1"});
-            
-            await BOOK.findByIdAndUpdate(req.params["bookId"], 
-            { quantity: _t-1})
-            .then(msg => {console.log(msg); res.locals.data = true;})
-            .catch(err => {console.log(err); throw "Error2"});
-
+            const get_book_quantity = await BOOK.findById(req.params["bookId"]);
+            await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] -1});
             await new BOOKSTATUS({
                 userid: req.params["userId"],
                 bookid: req.params["bookId"]
-            }).save()
-            .then(msg => {console.log(msg); res.locals.data = true; next();})
-            .catch(err => {console.log(err); throw "Error3"});
+            }).save();
+            res.locals.data = true;
+            next();
         }
     }
     catch(error)
@@ -51,15 +43,16 @@ export async function returnbook(req, res, next){
             next();
         }
         else if(Object.keys(req.params).length >= 2 ){
-            const get_book_quantity = await BOOK.findById(req.params["bookId"]).exec();
-            await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1}).exec();
-            await BOOKSTATUS.findByIdAndDelete({userid:req.params["bookId"]}).exec();
+            const get_book_quantity = await BOOK.findById(req.params["bookId"]);
+            await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1});
+            await BOOKSTATUS.findByIdAndDelete({userid:req.params["bookId"]});
             res.locals.data = true;
             next();
         }
     }
     catch(error)
     {
+        console.log(error);
         res.locals.data = false;
         next();
     }
@@ -76,7 +69,7 @@ export async function getuser_borrowed_books(req, res, next){
             next();
         }
         else if(Object.keys(req.params).length >= 1 ){
-            res.locals.data = await BOOKSTATUS.findById(req.params["userId"]);
+            res.locals.data = await BOOKSTATUS.findById({userid: req.params["userId"]});
             next();
         }
     }

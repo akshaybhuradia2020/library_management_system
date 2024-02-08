@@ -68,30 +68,30 @@ routes.post("/users/login", [login], function(req, res, next){
 });
 
 routes.post("/borrow/:bookId/:userId", [verifyToken, borrowbook], function(req, res, next){
-    if(res.locals.data){
-        res.sendStatus(200).json({message: "book is borrowed"});
+    if(res.locals.data === true){
+        res.status(200).json({message: "book is borrowed"});
     }
     else{
-        res.sendStatus(500).json({message: "SOMETHING WENT WRONG"});
+        res.status(500).json({message: "SOMETHING WENT WRONG"});
     }
 });
 
 routes.post("/return/:bookId/:userId", [verifyToken, returnbook], function(req, res, next){
-    if(res.locals.data){
-        res.sendStatus(200).json({message: "book is returned"});
+    if(res.locals.data === true){
+        res.status(200).json({message: "book is returned"});
     }
     else{
-        res.sendStatus(500).json({message: "SOMETHING WENT WRONG"});
+        res.status(500).json({message: "SOMETHING WENT WRONG"});
     }
     
 });
 
 routes.get("/users/:userId/books", [verifyToken, getuser_borrowed_books], function(req, res, next){
     if(res.locals.data){
-        res.sendStatus(200).json({ results: res.locals.data});
+        res.status(200).json({ results: res.locals.data});
     }
     else{
-        res.sendStatus(200).json({results: null});
+        res.status(200).json({results: null});
     }
     
 });
