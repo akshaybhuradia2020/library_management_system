@@ -45,7 +45,7 @@ export async function returnbook(req, res, next){
         else if(Object.keys(req.params).length >= 2 ){
             const get_book_quantity = await BOOK.findById(req.params["bookId"]);
             await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1});
-            await BOOKSTATUS.findByIdAndDelete({userid:req.params["bookId"]});
+            await BOOKSTATUS.deleteOne({userid:req.params["userId"], bookid:req.params["bookId"]});
             res.locals.data = true;
             next();
         }
@@ -69,7 +69,7 @@ export async function getuser_borrowed_books(req, res, next){
             next();
         }
         else if(Object.keys(req.params).length >= 1 ){
-            res.locals.data = await BOOKSTATUS.findById({userid: req.params["userId"]});
+            res.locals.data = await BOOKSTATUS.find({userid: req.params["userId"]});
             next();
         }
     }
