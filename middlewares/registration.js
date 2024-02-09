@@ -1,6 +1,9 @@
 import {dbconnection} from '../utility/dbconn.js';
 import { _userdata } from '../models/userdata.js';
 
+/***
+ * this function is for signup with unique username.
+ */
 export async function registration(req, res, next){
     try{
         let get_conn = await dbconnection();

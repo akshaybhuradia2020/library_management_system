@@ -1,6 +1,9 @@
 import {dbconnection} from '../utility/dbconn.js'
 import { _userdata } from '../models/userdata.js';
 
+/***
+ * this function is for login based on usernam and password.
+ */
 export async function login(req, res, next){
     try {
         let get_conn = await dbconnection();

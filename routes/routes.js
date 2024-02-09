@@ -11,6 +11,7 @@ import { verifyToken } from '../middlewares/auth.js';
 
 export const routes = Router();
 
+// this endpoint add books into the system.
 routes.post("/books", [verifyToken, addbooks], function(req, res){
     if(res.locals.data === true){
         res.status(201).json({message: "Book is added"});
@@ -20,6 +21,7 @@ routes.post("/books", [verifyToken, addbooks], function(req, res){
     }
 });
 
+// this endpoint get all books from the system.
 routes.get("/books", [verifyToken, getbooks], function(req, res){
     if(res.locals.data){
         res.status(200).json({results: res.locals.data});
@@ -29,6 +31,7 @@ routes.get("/books", [verifyToken, getbooks], function(req, res){
     }
 });
 
+// this endpoint get specific(based on id) books from the system.
 routes.get("/books/:id", [verifyToken, getbooks], function(req, res){
     if(res.locals.data){
         res.status(200).json({results: res.locals.data});
@@ -38,6 +41,7 @@ routes.get("/books/:id", [verifyToken, getbooks], function(req, res){
     }
 });
 
+// this endpoint is for user signup
 routes.post("/users", [registration], function(req, res, next){
     if(res.locals.check === false){
         res.status(409).json({message:"USER IS ALREADY REGISTERED", userreg: false});
@@ -50,6 +54,7 @@ routes.post("/users", [registration], function(req, res, next){
     }
 });
 
+// this endpoint is for user login and resource access of the system
 routes.post("/users/login", [login], function(req, res, next){
     if(res.locals.login[0] === -1){
         res.status(401).json({message:"USER IS NOT EXIST", uservalid: false, token: null});
@@ -67,6 +72,7 @@ routes.post("/users/login", [login], function(req, res, next){
     }
 });
 
+// this endpoint borrow a book from the system and update details specific to books and user
 routes.post("/borrow/:bookId/:userId", [verifyToken, borrowbook], function(req, res, next){
     if(res.locals.data === 0){
         res.status(200).json({message: "book is borrowed"});
@@ -79,6 +85,7 @@ routes.post("/borrow/:bookId/:userId", [verifyToken, borrowbook], function(req, 
     }
 });
 
+// this endpoint return a book to the system and update details specific to books and user
 routes.post("/return/:bookId/:userId", [verifyToken, returnbook], function(req, res, next){
     if(res.locals.data === 0){
         res.status(200).json({message: "book is returned"});
@@ -91,6 +98,7 @@ routes.post("/return/:bookId/:userId", [verifyToken, returnbook], function(req, 
     }
 });
 
+// this endpoint get all borrowed books by specific user 
 routes.get("/users/:userId/books", [verifyToken, getuser_borrowed_books], function(req, res, next){
     if(res.locals.data){
         res.status(200).json({ results: res.locals.data});

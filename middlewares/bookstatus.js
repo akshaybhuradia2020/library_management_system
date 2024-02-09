@@ -2,6 +2,12 @@ import {dbconnection} from '../utility/dbconn.js';
 import {_bookstatus} from '../models/bookstatus.js';
 import {_bookdata} from '../models/bookdata.js';
 
+/***  this function borrow a book from system and update quantity of books 
+ * in books collection and add record which user borrow(create acknowledgement) 
+ * this book in bookstatus collection
+ * function also check whether all books are borrowed or not. 
+ * */
+
 export async function borrowbook(req, res, next){
     try{
         let get_conn = await dbconnection();
@@ -39,6 +45,10 @@ export async function borrowbook(req, res, next){
 
 
 
+/*** this function return a book to system and update quantity of books 
+ * in books collection and delete record from bookstatus collection(remove acknowledgement).
+ * */
+
 export async function returnbook(req, res, next){
     try{
         let get_conn = await dbconnection();
@@ -51,7 +61,6 @@ export async function returnbook(req, res, next){
         }
         else if(Object.keys(req.params).length >= 2 ){
             const has_borrow_book_or_not = await BOOKSTATUS.findOne({userid: req.params["userId"], bookid: req.params["bookId"]});
-            console.log(has_borrow_book_or_not);
             if(has_borrow_book_or_not !=null){
                 const get_book_quantity = await BOOK.findById(req.params["bookId"]);
                 await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1});
@@ -73,7 +82,8 @@ export async function returnbook(req, res, next){
     }
 };
 
-
+/*** this function get all borrowed books from bookstatus collection based on userid and bookid
+ * */
 export async function getuser_borrowed_books(req, res, next){
     try
     {
@@ -84,7 +94,7 @@ export async function getuser_borrowed_books(req, res, next){
             next();
         }
         else if(Object.keys(req.params).length >= 1 ){
-            res.locals.data = await BOOKSTATUS.find({userid: req.params["userId"]}).select({bookid:1})
+            res.locals.data = await BOOKSTATUS.find({userid: req.params["userId"]}).select({bookid:1});
             next();
         }
     }

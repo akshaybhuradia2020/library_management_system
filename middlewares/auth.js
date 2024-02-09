@@ -1,6 +1,10 @@
 import jwt from 'jsonwebtoken';
 import { CONFIGURATION } from '../utility/const.js';
 
+
+/***
+ * this function checks whether token is vaild or not.
+ * */
 export function verifyToken(req, res, next) {
     const token = req.header('Authorization');
 

@@ -3,6 +3,9 @@
 import { dbconnection } from '../utility/dbconn.js'
 import { _bookdata } from '../models/bookdata.js';
 
+/*** this function return books details based on id,
+ * if id is not provided then all books of system are return.
+ * ***/
 export async function getbooks(req, res, next){
     try{
         let get_conn = await dbconnection();
