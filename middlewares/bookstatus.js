@@ -46,21 +46,29 @@ export async function returnbook(req, res, next){
         const BOOK = get_conn.model('BOOK', _bookdata);
     
         if(Object.keys(req.params).length <= 1){
-            res.locals.data = false
+            res.locals.data = -2
             next();
         }
         else if(Object.keys(req.params).length >= 2 ){
-            const get_book_quantity = await BOOK.findById(req.params["bookId"]);
-            await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1});
-            await BOOKSTATUS.deleteOne({userid:req.params["userId"], bookid:req.params["bookId"]});
-            res.locals.data = true;
-            next();
+            const has_borrow_book_or_not = await BOOKSTATUS.findOne({userid: req.params["userId"], bookid: req.params["bookId"]});
+            console.log(has_borrow_book_or_not);
+            if(has_borrow_book_or_not !=null){
+                const get_book_quantity = await BOOK.findById(req.params["bookId"]);
+                await BOOK.findByIdAndUpdate(req.params["bookId"], { quantity: get_book_quantity["quantity"] + 1});
+                await BOOKSTATUS.deleteOne({userid:req.params["userId"], bookid:req.params["bookId"]});
+                res.locals.data = 0;
+                next();
+            }
+            else{
+                res.locals.data = -1;
+                next();
+            }
+
         }
     }
     catch(error)
     {
-        console.log(error);
-        res.locals.data = false;
+        res.locals.data = -2;
         next();
     }
 };
