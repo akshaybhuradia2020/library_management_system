@@ -4,7 +4,7 @@
 * cd <proj dir>
 * npm init -y
 * npm i
-* npm install pm2@latest -g <this is run server as background service>
+* npm install pm2@latest -g //this is run server as background service
 * pm2 start main.js
 
 
@@ -34,6 +34,7 @@
 
 
 #### Endpoint : http://127.0.0.1:3000/api/books/65c5c68fbdebdf9d9cc79c45 ####
+#### URL Format : http://127.0.0.1:3000/api/books/:id ####
 #### Method : GET ####
 #### Headers : Authorization: token value from login api ####
 #### Response : { "results": {"_id": "65c518db2780dff66047807b","title": "xyz","author": "xyz","isbn": "xyz","quantity": 9,"__v": 0} } ####
@@ -41,17 +42,20 @@
 
 #### Endpoint : http://127.0.0.1:3000/api/borrow/65c518db2780dff66047807b/65c4dbe6c8a06f33c571d36c ####
 #### Method : POST ####
+#### Format : http://127.0.0.1:3000/api/borrow/:bookId/:userId ####
 #### Headers : Authorization: token value from login api ####
 #### Response : { "message": "book is borrowed" } ####
 
 
 #### Endpoint : http://127.0.0.1:3000/api/return/65c518db2780dff66047807b/65c4dbe6c8a06f33c571d36c ####
 #### Method : POST ####
+#### Format : http://127.0.0.1:3000/api/return/:bookId/:userId ####
 #### Headers : Authorization: token value from login api ####
 #### Response : { "message": "book is returned" } ####
 
 #### Endpoint : http://127.0.0.1:3000/api/users/65c4dbe6c8a06f33c571d36c/books ####
 #### Method : GET ####
+#### Format : http://127.0.0.1:3000/api/users/:userId/books ####
 #### Headers : Authorization: token value from login api ####
 #### Response : {"results": [{"_id": "65c54d6431c6283ac974335e","bookid": "65c518db2780dff66047807b"}]} ####
 
