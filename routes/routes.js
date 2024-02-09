@@ -22,19 +22,19 @@ routes.post("/books", [verifyToken, addbooks], function(req, res){
 
 routes.get("/books", [verifyToken, getbooks], function(req, res){
     if(res.locals.data){
-        res.status(200).json({result: res.locals.data});
+        res.status(200).json({results: res.locals.data});
     }
     else{
-        res.status(500).json({result: null});
+        res.status(500).json({results: null});
     }
 });
 
 routes.get("/books/:id", [verifyToken, getbooks], function(req, res){
     if(res.locals.data){
-        res.status(200).json({result: res.locals.data});
+        res.status(200).json({results: res.locals.data});
     }
     else{
-        res.status(500).json({result: null});
+        res.status(500).json({results: null});
     }
 });
 
@@ -96,7 +96,7 @@ routes.get("/users/:userId/books", [verifyToken, getuser_borrowed_books], functi
         res.status(200).json({ results: res.locals.data});
     }
     else{
-        res.status(200).json({results: null});
+        res.status(200).json({ results: null});
     }
     
 });
