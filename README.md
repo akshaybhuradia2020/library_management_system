@@ -10,7 +10,7 @@
 
 ## RestAPI Endpoints: ##
 
-### Endpoint : http://127.0.0.1:3000/api/users ###
+#### Endpoint : http://127.0.0.1:3000/api/users ####
 ### Method : POST ###
 ### Body : { "username": "vikas", "email": "vikas@gmail.com", "password": "12345678"} ###
 ### Response : {"message": "USER IS REGISTERED","userreg": true} ###
